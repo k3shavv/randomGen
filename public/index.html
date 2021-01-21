@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+
+    <div class="container">
+
+
+        <div class="input-container">
+
+            <label for="subject">Select subject</label>
+            <select name="subject" id="subject">
+                <option value="0">Select a subject</option>
+                <option value="english">English</option>
+                <option value="maths">Maths</option>
+                <option value="science">Science</option>
+                <option value="civics">Civics</option>
+                <option value="evs">EVS</option>
+                <option value="history">History</option>
+                <option value="geography">Geography</option>
+                <option value="economics">Economics</option>  
+            </select>
+
+            <label for="subject">Enter series</label>
+            <input type="text" name="series" id="series"></input>
+
+            <button id="generate">GENERATE</button>
+            <button id="view-all">Show All</button>
+            
+        </div>
+
+        <div id="display">
+            <h1></h1>        
+        </div>
+
+        <div class="table-container">
+            <div class="tableheader">
+                <div class="chapter-head">chapter</div>
+                <div class="series-head">series</div>
+                <div class="sequence-head">sequence</div>
+            </div>
+            <div class="table-item-container">
+
+            </div>
+
+            
+        </div>
+
+    </div>
+
+    <script>
+        const textContainer=document.querySelector('#display h1');
+        const tableContainer=document.querySelector('.table-container')
+        const tableItemContainer=document.querySelector('.table-item-container')
+
+        const sendData=async()=>{
+            try {
+
+                    subjectVal=subject.value;
+                    seriesVal=series.value;
+
+                    if(subjectVal=="0" || seriesVal=="")
+                    {
+                        console.log("enter valid information");
+                        return;
+                    }
+
+
+                    const data={subjectVal,seriesVal};
+
+                    const options={
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+
+
+                   const response= await fetch('/ss',options);
+                   const result=await response.json();
+                   
+                   //show result on the screen
+                   textContainer.innerText=result.result;
+
+                   //reset input fields
+                   subject.value="0";
+                   series.value="";  
+            } catch (error) {
+                console.error(error)
+            }
+
+            
+        }
+
+
+        let subject=document.querySelector('#subject');
+        let series=document.querySelector('#series');
+
+        let subjectVal;
+        let seriesVal;
+
+        const generate=document.querySelector('#generate');
+        generate.addEventListener('click',()=>{
+           sendData();
+        })
+
+        const getAllData=async()=>{
+
+            const response= await fetch('/ss');
+            const result=await response.json();
+
+            while (tableItemContainer.firstChild) {
+            tableItemContainer.removeChild(tableItemContainer.firstChild);
+    }
+
+            for(let i=0;i<result.length;i++)
+            {
+                const tableitems=document.createElement('div');
+                tableitems.setAttribute('class','tableitem');
+                
+                const subjectField=document.createElement('div');
+                subjectField.innerText=result[i].subject;
+                const seriesField=document.createElement('div');
+                seriesField.innerText=result[i].series;
+                const sequenceField=document.createElement('div');
+                sequenceField.innerText=result[i].sequence;
+
+                tableitems.appendChild(subjectField);
+                tableitems.appendChild(seriesField);
+                tableitems.appendChild(sequenceField);
+
+                tableItemContainer.appendChild(tableitems);
+
+            }
+            
+            tableContainer.appendChild(tableItemContainer);
+
+        }
+
+
+        const showData=document.querySelector('#view-all');
+        showData.addEventListener('click',()=>{
+           getAllData();
+        })
+
+
+
+       
+
+
+
+
+    </script>
+
+</body>
+</html>

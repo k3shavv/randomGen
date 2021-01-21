@@ -1,0 +1,17 @@
+body{
+    background-color:whitesmoke;
+}
+
+.tableheader{
+display:grid;
+grid-template-columns: 1fr 1fr 1fr;
+background-color: #fff;
+justify-items: center;
+}
+
+.tableitem{
+display:grid;
+grid-template-columns: 1fr 1fr 1fr;
+background-color: #fff;
+justify-items: center;
+}

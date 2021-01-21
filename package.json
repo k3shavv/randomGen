@@ -1,0 +1,18 @@
+{
+  "name": "randomgen",
+  "version": "1.0.0",
+  "description": "program for generating random codes based on subject and series code",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./index.js"
+  },
+  "author": "keshav",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.13",
+    "nodemon": "^2.0.7"
+  }
+}
